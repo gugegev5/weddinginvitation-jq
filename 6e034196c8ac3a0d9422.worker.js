@@ -51,6 +51,7 @@
     }),
     (n.p = ""),
     n((n.s = 16));
+    // console.log(n.s, n(n.s));
 })([
   function (t, e) {
     t.exports = function () {
@@ -1607,8 +1608,16 @@
             {
               key: "getAsURI",
               value: function (t) {
-                var e = this.getData(t),
+                var file = this._findFile(t);
+                if(file.url) {
                   n = this.getType(t);
+                  console.error('getAsURI', t, 'type', n, 'file', file)
+                  return `/res/${file.url}`;
+                }
+                var e = this.getData(t),
+                n = this.getType(t);
+                
+                console.warn('getAsURI', t, 'type', n, 'data', e)
                 return (s.default ? self.Blob : Detect.supports.blob)
                   ? u.createObjectURL(new Blob([e], { type: n }))
                   : "data:" + n + ";base64," + btoa(e);
@@ -1620,7 +1629,7 @@
                 for (var e = this._config.length; e-- > 0; )
                   if (this._config[e][0] === t) {
                     var n = this._config[e];
-                    return { name: n[0], begin: n[1], end: n[2], type: n[3] };
+                    return { name: n[0], begin: n[1], end: n[2], type: n[3], url: n[4] };
                   }
               },
             },
